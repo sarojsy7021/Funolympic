@@ -1,0 +1,240 @@
+<%- include('../../components/dashboard/navabar.ejs') %>
+
+    <style>
+        body {
+            background-image: url("https://d2lwtouoc9qh9n.cloudfront.net/wp-content/uploads/2023/01/wordpress-basics-featured-image-jpg.webp");
+        }
+
+        .admin-container {
+            display: flex;
+            margin-left: 60px;
+            align-items: center;
+            height: 100vh;
+            margin-top: 40px;
+        }
+
+        .admin-panel {
+            margin-left: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .admin-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        table {
+            border: 3px solid rgb(0, 0, 0);
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        thead {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 250, 250);
+        }
+
+        thead th {
+            padding: 10px;
+        }
+
+        tbody tr td {
+            color: white;
+            text-align: center;
+            border-right: 3px solid rgb(0, 0, 0);
+            padding: 10px;
+            background-color: rgb(68, 71, 245);
+        }
+    </style>
+
+    <body>
+        <div class="admin-container">
+            <div class="admin-panel">
+                <h1 style="color: rgb(246, 156, 0);">Admin Panel</h1>
+                <div class="admin-buttons">
+                    <button id="add-photos-btn " onclick="window.location.href = '/addPhotos'">Add
+                        Photos</button>
+                    <button id="add-games-btn" onclick="window.location.href = '/addGames'">Add Games</button>
+                    <button id="add-schedule-btn" onclick="window.location.href = '/addSchedule'">Add
+                        Schedule</button>
+                    <button id="add-videos-btn" onclick="window.location.href = '/addVideos'">Add
+                        Videos</button>
+                    <button id="add-news-btn" onclick="window.location.href = '/addNews'">Add News</button>
+                    <button id="view-analytics-btn" onclick="window.location.href = '/moreAnalytics'">More
+                        Analytics</button>
+                    <button id="view-members-btn" onclick="window.location.href = '/manageUsers'">Manage
+                        Users</button>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h1 style="color: rgb(246, 156, 0); margin-left: 400px; margin-bottom: 15px; margin-top: -8%; ">
+                        Manage Users
+                        <button id="back"
+                            style=" padding: 8px 15px; font-size: 15px;background-color: #4CAF50;color: white;border: none;border-radius: 20px; cursor: pointer; margin-left: 3px; margin-left: 170px; ">Go
+                            Back
+                        </button>
+                    </h1>
+                </div>
+                <div style="margin-right: -64px; ">
+                    <table>
+                        <thead>
+                            <th>S.No.</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    #
+                                </td>
+                                <td>
+                                    <input type="text" id="fullname" style="padding: 3px;" name="fullname">
+                                </td>
+                                <td>
+                                    <input type="email" id="email" style="padding: 3px;" name="email">
+                                </td>
+                                <td>
+                                    <input type="text" id="password" style="padding: 3px;" name="password">
+                                </td>
+                                <td>
+                                    <input type="text" id="phone" style="padding: 3px;" name="phone">
+                                </td>
+
+                                <td>
+                                    <button id="add"
+                                        style="background-color: rgb(255, 132, 0); color: white; padding: 5px; cursor: pointer; border-radius: 15px;">
+                                        Add
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+    <script>
+        $("#back").on('click', () => {
+            window.location.href = "/manageUsers";
+        })
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-right",
+            iconColor: "white",
+            customClass: {
+                popup: "colored-toast",
+            },
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+        });
+
+        $('#add').on('click', (e) => {
+            e.preventDefault()
+
+            const name = $('#fullname').val()
+            const email = $('#email').val()
+            const phone = $('#phone').val()
+            const password = $('#password').val()
+
+            if (name == "" || email == "" || phone == "" || password == "") {
+                return Toast.fire({
+                    icon: 'error',
+                    title: 'Please fill all fields!',
+                })
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to add user!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, add it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    return fetch('/addUser', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, phone, password })
+                    }).then((res) => res.json())
+                        .then((result) => {
+                            if (result == "no admin") {
+                                return Swal.fire({
+                                    title: "Admin doesn't exist!",
+                                    text: "Do you want to register?",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes",
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.href = "/register";
+                                    }
+                                });
+                            }
+                            if (result == "error") {
+                                return Toast.fire({
+                                    icon: "error",
+                                    title: `There is an issue. Please check again later!`,
+                                });
+                            }
+                            if (result == "success") {
+                                Swal.fire(
+                                    'Added!',
+                                    'Your changes have been saved.',
+                                    'success'
+                                ).then(() => {
+                                    window.location.href = '/manageUsers'
+                                })
+                            }
+                        })
+                }
+            })
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>

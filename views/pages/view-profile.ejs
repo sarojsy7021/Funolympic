@@ -1,0 +1,156 @@
+<%- include('../components/dashboard/navabar.ejs') %>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/rm222batch5-kul-36_1.jpg?w=1200&h=1200&dpr=1&fit=clip&crop=default&fm=jpg&q=75&vib=3&con=3&usm=15&cs=srgb&bg=F4F4F3&ixlib=js-2.2.1&s=48152499827197044313d436c27c00ad");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card2 {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-outline {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .btn-primary {
+            border-radius: 15px;
+            font-size: 20px;
+            background-color: #76afe7;
+            border-color: #007bff;
+            padding: 5px;
+            margin-top: 40px;
+            margin-left: 38%;
+        }
+
+        label {
+            color: black;
+        }
+
+        .btn-primary:hover {
+            background-color: #5eceea;
+            border-color: #0062cc;
+            cursor: pointer;
+        }
+    </style>
+
+    <body>
+        <main style="margin-top: 80px; display: flex;justify-content: center;">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="title">
+                        <h3>Edit Profile</h3>
+                    </div>
+                    <div class="card2">
+                        <div class="card-body">
+                            <!-- form  -->
+                            <form enctype="multipart/form-data" id="sellerprofileForm" name="sellerprofileForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="form-outline">
+                                            <label for="companyName" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="companyName" name="companyName"
+                                                value="<%= data?.name %>" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-outline">
+                                            <label for="companyRepresentative" style="margin-right: 30px;"
+                                                class="form-label">Email</label>
+                                            <input type="text" class="form-control" id="email" name="email"
+                                                value="<%= data?.email %>" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label"
+                                        style="margin-right: 30px;">Phone</label>
+                                    <input class="form-control" name="phone" id="phone" value='<%= data?.phone %>'>
+                                </div>
+                                <div class="mb-3">
+                                    <button type="button" id="saveBtn" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            $('#saveBtn').on('click', e => {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to save changes!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = document.getElementById("sellerprofileForm")
+                        const formData = new FormData(form);
+
+                        fetch(`/view-profile`, {
+                            method: 'POST',
+                            body: formData
+                        }).then(response => response.json())
+                            .then(result => {
+                                if (result == 'success') {
+                                    Swal.fire(
+                                        'Saved!',
+                                        'Your changes have been saved.',
+                                        'success'
+                                    ).then(() => {
+                                        window.location.href = '/'
+                                    })
+                                }
+                                if (result == 'error') {
+                                    Swal.fire(
+                                        'Error!',
+                                        'Something went wrong! Try again later',
+                                        'error'
+                                    ).then(() => {
+                                        window.location.href = '/'
+                                    })
+                                }
+                            })
+                    }
+                })
+            })
+        </script>
+
+
+    </body>
+
+    </html>

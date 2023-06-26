@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Olympics</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/yo/logo.jpeg" type="image/x-icon">
+</head>
+
+<% if(data?.role=="admin" ){ %>
+
+    <body>
+        <style>
+            .profile-container {
+                position: absolute;
+                top: 40px;
+                right: 10px;
+                width: 135px;
+                height: 60px;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                display: none;
+                /* Hide initially */
+                /* Additional styling */
+            }
+
+            .profile-container.show {
+                display: block;
+                margin-top: 25px;
+                border-radius: 5px;
+                padding: 15px;
+                background-color: rgb(58, 180, 171);
+            }
+        </style>
+        <nav>
+            <div class="main-nav container flex">
+                <a href="/" class="logo">
+                    <img src="/yo/logo.jpeg" alt="logo">
+                </a>
+
+                <div class="nav-links">
+                    <ul class="flex">
+                        <a href="/">
+                            <li class="hover-link nav-item">Home</li>
+                        </a>
+                        <a href="/news">
+                            <li class="hover-link nav-item">News</li>
+                        </a>
+                        <a href="/games">
+                            <li class="hover-link nav-item">Games</li>
+                        </a>
+                        <a href="/channel">
+                            <li class="hover-link nav-item">Channel</li>
+                        </a>
+                        <a href="/schedule">
+                            <li class="hover-link nav-item">Game-Schedule</li>
+                        </a>
+                        <a href="/gallery">
+                            <li class="hover-link nav-item">Gallery</li>
+                        </a>
+
+                    </ul>
+                </div>
+
+                <div class="login-container">
+                    <span class="profile-icon">&#128102;</span>
+                    <div class="profile-container">
+                        <h5 style="color: black; margin-left: 4px; ">
+                            <div style="position: absolute;">
+                                <img height="20px"
+                                    src="https://w7.pngwing.com/pngs/475/85/png-transparent-computer-icons-logout-angle-text-black-thumbnail.png"
+                                    alt="">
+                            </div>
+                            <a href="/logout" class="logout" style="margin-left: 25px;">Logout</a>
+                        </h5>
+                    </div>
+                    <span class="login-text ">
+                        <%= data.name%>
+                    </span>
+                </div>
+
+            </div>
+        </nav>
+        <script>
+            const emojiIcon2 = document.querySelector('.login-container');
+            const profileContainer2 = document.querySelector('.profile-container');
+            emojiIcon2.addEventListener('click', () => {
+                profileContainer2.classList.toggle('show');
+            });
+        </script>
+
+    </body>
+
+    <% } else if(data?.role=="user" ){ %>
+
+        <body>
+            <style>
+                .profile-container {
+                    position: absolute;
+                    top: 40px;
+                    right: 10px;
+                    width: 135px;
+                    height: 80px;
+                    background-color: #fff;
+                    border: 1px solid #ccc;
+                    display: none;
+                    /* Hide initially */
+                    /* Additional styling */
+                }
+
+                .profile-container.show {
+                    display: block;
+                    margin-top: 25px;
+                    border-radius: 5px;
+                    padding: 15px;
+                    background-color: rgb(58, 180, 171);
+                }
+            </style>
+            <nav>
+                <div class="main-nav container flex">
+                    <a href="/" class="logo">
+                        <img src="/yo/logo.jpeg" alt="logo">
+                    </a>
+
+                    <div class="nav-links">
+                        <ul class="flex">
+                            <a href="/">
+                                <li class="hover-link nav-item">Home</li>
+                            </a>
+                            <a href="/news">
+                                <li class="hover-link nav-item">News</li>
+                            </a>
+                            <a href="/games">
+                                <li class="hover-link nav-item">Games</li>
+                            </a>
+                            <a href="/channel">
+                                <li class="hover-link nav-item">Channel</li>
+                            </a>
+                            <a href="/schedule">
+                                <li class="hover-link nav-item">Game-Schedule</li>
+                            </a>
+                            <a href="/gallery">
+                                <li class="hover-link nav-item">Gallery</li>
+                            </a>
+                            <a href="/contact">
+                                <li class="hover-link nav-item">Contact</li>
+                            </a>
+                        </ul>
+                    </div>
+
+                    <div class="search-bar flex ">
+                        <input type="text" class="news-input" placeholder="e.g. Ronaldo">
+                        <button class="search-button">Search</button>
+                    </div>
+
+                    <div class="login-container">
+                        <span class="profile-icon">&#128102;</span>
+                        <div class="profile-container">
+                            <h5 style="color: black; "> <a href="/view-profile" class="view-profile"> view profile</a>
+                            </h5>
+                            <h5 style="color: black; margin-top: 10px; "> <a href="/logout" class="logout">logout</a>
+                            </h5>
+                        </div>
+                        <span class="login-text ">
+                            <%= data.name%>
+                        </span>
+                    </div>
+
+                </div>
+            </nav>
+            <script>
+                const emojiIcon = document.querySelector('.login-container');
+                const profileContainer = document.querySelector('.profile-container');
+                emojiIcon.addEventListener('click', () => {
+                    profileContainer.classList.toggle('show');
+                });
+            </script>
+
+        </body>
+
+        <% } else { %>
+
+            <body>
+                <nav>
+                    <div class="main-nav container flex">
+                        <a href="/" class="logo">
+                            <img src="/yo/logo.jpeg" alt="logo">
+                        </a>
+
+                        <div class="nav-links">
+                            <ul class="flex">
+                                <a href="/">
+                                    <li class="hover-link nav-item">Home</li>
+                                </a>
+                                <a href="/news">
+                                    <li class="hover-link nav-item">News</li>
+                                </a>
+                                <a href="/games">
+                                    <li class="hover-link nav-item">Games</li>
+                                </a>
+                                <a href="/channel">
+                                    <li class="hover-link nav-item">Channel</li>
+                                </a>
+                                <a href="/schedule">
+                                    <li class="hover-link nav-item">Game-Schedule</li>
+                                </a>
+                                <a href="/gallery">
+                                    <li class="hover-link nav-item">Gallery</li>
+                                </a>
+                                <a href="/contact">
+                                    <li class="hover-link nav-item">Contact</li>
+                                </a>
+                            </ul>
+                        </div>
+
+                        <div class="search-bar flex ">
+                            <input type="text" class="news-input" placeholder="e.g. Ronaldo">
+                            <button class="search-button">Search</button>
+                        </div>
+
+                        <div class="login-container">
+                            <span class="profile-icon">&#128102;</span>
+                            <% if (currentRoute==='login' ) { %>
+                                <span class="login-text "> <a href="/register">Register</a> </span>
+                                <% } else { %>
+                                    <span class="login-text "> <a href="/login">Login</a> </span>
+                                    <% } %>
+                        </div>
+
+                    </div>
+                </nav>
+
+            </body>
+
+            <% } %>
+
+</html>

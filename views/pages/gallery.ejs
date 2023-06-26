@@ -1,0 +1,43 @@
+<%- include('../components/dashboard/navabar.ejs') %>
+
+    <style>
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        main {
+            margin-top: 100px;
+            max-width: 1280px;
+            margin-inline: auto;
+        }
+
+        .games-hero .games-container {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            justify-items: center;
+            gap: 40px;
+        }
+
+        .games-item {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+    <main>
+        <div class="games-hero">
+            <h3 style="text-align: center;">Photos</h3>
+            <div class="games-container">
+                <% for(let i=0;i< photos.length; i++) { %>
+                    <div class="games-item">
+                        <img src="<%= photos[i].image %>" alt="">
+                        <h3 style="position: relative; display: flex; justify-content: center; ">
+                            <%= photos[i].title %>
+                        </h3>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </main>

@@ -1,0 +1,66 @@
+<%- include('../components/dashboard/navabar.ejs') %>
+
+    <style>
+        main {
+            margin-top: 100px;
+            max-width: 1280px;
+            margin-inline: auto;
+        }
+
+        .main-title {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            border: 1px solid orange;
+            border-collapse: collapse;
+            margin-left: 36%;
+        }
+
+        thead {
+            background-color: orange;
+            color: white;
+        }
+
+        thead th {
+            padding: 10px;
+        }
+
+        tbody tr td {
+            text-align: center;
+            border-right: 1px solid orange;
+            padding: 10px;
+        }
+    </style>
+
+    <main>
+        <h3 class="main-title">Schedule</h3>
+        <table>
+            <thead>
+                <th>Title</th>
+                <th>Games between</th>
+                <th>Date</th>
+                <th>Time</th>
+            </thead>
+            <tbody>
+                <% for(let i=0; i< sch.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= sch[i].title %>
+                        </td>
+                        <td>
+                            <%= sch[i].gamesBetween %>
+                        </td>
+                        <td>
+                            <%= sch[i].date %>
+                        </td>
+                        <td>
+                            <%= sch[i].time %>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
+    </main>

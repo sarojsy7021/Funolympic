@@ -1,0 +1,207 @@
+<%- include('../components/dashboard/navabar.ejs') %>
+
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <link rel="stylesheet" href="style2.css">
+    </head>
+
+    <body>
+        <form class="container">
+            <label>Full Name</label>
+
+            <input type="text2" name="name" id="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+
+            <label>Phone</label>
+            <input type="number" name="phone" id="phone">
+
+            <label for="password">Password </label>
+            <input type="password" name="password" id="password" style="margin-bottom: 5px;" required>
+
+            <div class="strengthMeter"></div>
+
+            <button id="show-button"
+                style="border-radius: 10px; cursor: pointer; margin-left: 240px;padding: 1%;; margin-top: -5px; font-size: 15px;">Show</button>
+
+            <label for="confirm-password" style="margin-top: 10px;">Confirm Password</label>
+            <input type="password" name="confirmPassword" id="confirm-password" required>
+            <button id="show-button2"
+                style="border-radius: 10px; cursor: pointer; margin-left: 240px;padding: 1%;; margin-top: 8px; font-size: 15px;">Show</button>
+
+            <button style="margin-top: 2px;" class="register-btn" type="submit">Register</button>
+            <a style="margin-top: 5px;" href="/login">Already have an account?</a>
+
+        </form>
+
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-right",
+                iconColor: "white",
+                customClass: {
+                    popup: "colored-toast",
+                    toast: "toast-icon",
+                },
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+            });
+
+            $(".register-btn").on("click", (e) => {
+
+                e.preventDefault()
+
+                var name = $("#name").val()
+                var email = $("#email").val()
+                var phone = $("#phone").val()
+                var password = $("#password").val()
+                var confirmPassword = $("#confirm-password").val()
+
+                if (name == "" || email == "" || password == "" || confirmPassword == "") {
+                    return Toast.fire({
+                        title: `Fill up all the required fields`,
+                        icon: "error"
+                    })
+                }
+                if (password !== confirmPassword) {
+                    return Toast.fire({
+                        icon: "error",
+                        title: `Passwords didn't match!`,
+                    });
+                }
+
+                return fetch("/register", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, phone, password, })
+                }).then((res) => res.json())
+                    .then(data => {
+                        if (data.title == "success") {
+                            return Toast.fire({
+                                icon: "success",
+                                title: `Your registration was successful!`,
+                            }).then(() => {
+                                location.href = "/login";
+                            });
+                        }
+                        if (data.title == "user exists") {
+                            return Swal.fire({
+                                title: "User already exist!",
+                                text: "Do you want to log in?",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.href = "/login";
+                                }
+                            });
+                        }
+                        if (data.title == "error") {
+                            return Swal.fire({
+                                icon: "error",
+                                title: `Something went wrong! Try again later!`,
+                            });
+                        }
+                    })
+            })
+
+
+        </script>
+
+        <script>
+            const passwordField = document.getElementById('password')
+            const showButton = document.getElementById("show-button")
+            const passwordField2 = document.getElementById('confirm-password')
+            const showButton2 = document.getElementById("show-button2")
+
+            showButton.addEventListener("click", (e) => {
+                e.preventDefault()
+                if (passwordField.type === "password" && passwordField.value !== '') {
+                    passwordField.type = "text2";
+                    showButton.textContent = "Hide";
+                } else {
+                    passwordField.type = "password";
+                    showButton.textContent = "Show";
+                }
+            });
+
+            showButton2.addEventListener("click", (e) => {
+                e.preventDefault()
+                if (passwordField2.type === "password" && passwordField2.value !== '') {
+                    passwordField2.type = "text2";
+                    showButton2.textContent = "Hide";
+                } else {
+                    passwordField2.type = "password";
+                    showButton2.textContent = "Show";
+                }
+            });
+
+
+        </script>
+
+        <script>
+            let password = document.querySelector('#password')
+            let container = document.querySelector('.strengthMeter')
+            console.log(container);
+
+            password.addEventListener('input', () => {
+                function strength(password) {
+                    let i = 0
+                    if (password.length > 6) {
+                        i++
+                    }
+                    if (password.length >= 8) {
+                        i++
+                    }
+                    if (/[A-Z]/.test(password)) {
+                        i++;
+                    }
+                    if (/[0-9]/.test(password)) {
+                        i++;
+                    }
+                    if (/[A-Za-z0-8]/.test(password)) {
+                        i++;
+                    }
+                    return i;
+                }
+
+                if (strength(password.value) <= 2 && strength(password.value) >= 1) {
+                    container.classList.add('weak')
+                    container.classList.remove('medium')
+                    container.classList.remove('strong')
+                }
+                else if (strength(password.value) === 0) {
+                    container.classList.remove('weak')
+                    container.classList.remove('medium')
+                    container.classList.remove('strong')
+                }
+                else if (strength(password.value) >= 2 && strength(password.value) <= 4) {
+                    container.classList.remove('weak')
+                    container.classList.add('medium')
+                    container.classList.remove('strong')
+                }
+                else {
+                    container.classList.remove('weak')
+                    container.classList.remove('medium')
+                    container.classList.add('strong')
+                }
+            })
+
+        </script>
+
+
+    </body>

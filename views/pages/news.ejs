@@ -1,0 +1,28 @@
+<%- include('../components/dashboard/navabar.ejs') %>
+
+    <body>
+        <main style="padding-block: 20px; margin-top: 80px ;">
+            <div class="cards-container container flex">
+                <%for(let i=0; i < news.length; i++ ) { %>
+                    <div class="card">
+                        <div class="card-header">
+                            <img src="<%= news[i].image %>" alt="news-img" id="news-img" height="230px">
+                        </div>
+                        <div class="card-content">
+                            <h3 id="news-title">
+                                <%= news[i].title %>
+                            </h3>
+                            <h6 class="news-source" id="news-source">
+                                <%= news[i].source %>
+                            </h6>
+                            <p class="news-desc" id="news-desc">
+                                <%=news[i].description %>
+                            </p>
+                        </div>
+                    </div>
+                    <% } %>
+        </main>
+
+
+
+    </body>

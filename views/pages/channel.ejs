@@ -1,0 +1,43 @@
+<%- include('../components/dashboard/navabar.ejs') %>
+
+    <style>
+        video {
+            width: 100%;
+            height: 100%;
+        }
+
+        main {
+            margin-top: 100px;
+            max-width: 1280px;
+            margin-inline: auto;
+        }
+
+        .games-hero .games-container {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            justify-items: center;
+            gap: 40px;
+        }
+
+        .games-item {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
+    <main>
+        <div class="games-hero">
+            <h3 style="text-align: center;">Watch Videos</h3>
+            <div class="games-container">
+                <% for(let i=0; i< videos.length;i++) { %>
+                    <div class="games-item">
+                        <video src="<%= videos[i].videoPath %>" controls></video>
+                        <h3 style="position: relative; display: flex; justify-content: center; ">
+                            <%= videos[i].title %>
+                        </h3>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </main>
