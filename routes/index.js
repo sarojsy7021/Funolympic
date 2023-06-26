@@ -161,8 +161,11 @@ Router.post('/view-profile', upload.fields([{}]), authCheckUser, async (req, res
 Router.post('/addUser', authCheckAdmin, async (req, res) => {
     const { name, email, phone, password } = req.body
 
+    var salt = bcrypt.genSaltSync(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+
     await User.create({
-        name, email, phone, password: password
+        name, email, phone, password: hashedPassword
     })
     return res.json("success")
 
