@@ -182,7 +182,7 @@ const Messages = db.define("messages", {
     email: {
         type: DataTypes.STRING,
     },
-    phonenumber: {
+    address: {
         type: DataTypes.STRING,
     },
     message: {
