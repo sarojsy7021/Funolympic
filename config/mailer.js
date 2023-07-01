@@ -1,20 +1,16 @@
 const nodemailer = require('nodemailer')
 
 // Nodemailer Instance
-const client = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
+var client = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
     auth: {
-        user: process.env.MAILID,
-        pass: process.env.MAILPASS
-    },
-    tls: {
-        rejectUnauthorized: false
+      user: "bc7d81caaa344b",
+      pass: "5ed7c606777e44"
     }
-})
+  });
 
-client.verify(function (error, success) {
+  client.verify(function (error, success) {
     if (error) {
         console.log(error);
     } else {
